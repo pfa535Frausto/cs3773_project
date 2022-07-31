@@ -1,41 +1,75 @@
 import React, {useState} from 'react';
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "./firebase";
+// import { auth } from "./firebase";
+import { useStateValue } from "./StateProvider";
+import { UserMatch, UserExists, AddUserToDB} from "./DBFunctions";
+
 
 
 function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [{ user }, dispatch] = useStateValue();
+
+  const emailFormat = /^\w+@\w+\.\w+/;
 
   const signIn = e => {
     e.preventDefault(); // prevents default browser refresh
+    // check for valid input
+    if( email.match(emailFormat) === null ){
+      // display error if invalid input
+      console.log("invalid email format");
+      return;
+    }
+    // do DB query with username + pw
+    // if no match:
+    if( UserMatch(email,password) === false ){
+      // display error if no username + pw match
+      console.log("no match with that email and password combo");
+      return;
+    }
 
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then((auth) => {
-        navigate('/');
-      })
+    // display error
+    // else:
+    dispatch({
+      type: 'SET_USER',
+      user: {
+        email: email,
+      },
+    });
+    navigate('/');
 
-      .catch(error => alert(error.message))
 
   }
 
   const register = e => {
     e.preventDefault(); // prevents default browser refresh
-    auth
-      .createUserWithEmailAndPassword(email,password)
-      .then((auth) => { 
-        // Success with creating new user w/ email and PW
-        console.log(auth);
-        // if success, redirect to homepage
-        if( auth )
-        {
-          navigate('/')
-        }
-      })
-      .catch(error => alert(error.message))
+        // check for valid input
+    if( email.match(emailFormat) === null ){
+      console.log("invalid email format")
+      return;
+    }
+    // do DB query with username + pw
+    // if match:
+    if( UserExists(email) === true ){
+      // display error if no username + pw match
+      console.log("There is an account registered with that email already")
+      return;
+    }
+    // else:
+    dispatch({
+      type: 'SET_USER',
+      user: {
+        email: email,
+      },
+    });
+    // add email + pw to DB
+    AddUserToDB(email, password)
+    // get addy and payment from query result
+      
+    navigate('/');
 
   }
 

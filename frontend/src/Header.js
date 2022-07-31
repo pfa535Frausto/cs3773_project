@@ -2,7 +2,7 @@ import React from 'react';
 import './Header.css';
 import { Link } from "react-router-dom";
 import { useStateValue } from './StateProvider';
-import { auth } from './firebase';
+//import { auth } from './firebase';
 
 
 function Header() {
@@ -10,7 +10,7 @@ function Header() {
 
     // will be used to display the username if logged in or guest if not logged in
     let account = 'Guest';
-    if( user )
+    if( user && user?.email !== 'Guest' )
     {
         account = user?.email;
     }
@@ -18,10 +18,18 @@ function Header() {
     
 
     const handleAuthentication = () => {
-        if( user ) 
+        if( user && user?.email !== 'Guest' ) 
         {
-            auth.signOut();
+//            auth.signOut();
+            //user = null;
+            dispatch({
+                type: 'SET_USER',
+                user: {
+                  email: 'Guest',
+                },
+              });
         }
+        
     }
 
   return (
@@ -45,7 +53,7 @@ function Header() {
                         className='header__optionLineOne'>Hello, {account}
                     </span>
                     <span
-                        className='header__optionLineTwo'>{user ? 'Sign Out' : 'Sign In'}
+                        className='header__optionLineTwo'>{user && user?.email !== 'Guest' ? 'Sign Out' : 'Sign In'}
                     </span>
                 </div>
             </Link>
