@@ -13,9 +13,6 @@ function Checkout() {
   const [ { cart, user, promoCodes }, dispatch] = useStateValue();
   const [promo_code_input, setPromoCode] = useState('');
 
-  
-
-
   let message = "Save time on future orders by creating an account and adding your address and credit card information on the \"Account Settings\" page"
   if ( user && user?.email !== 'Guest' ){
     message = "Save time on future orders by adding your address and credit card information on the \"Account Settings\" page"
@@ -23,8 +20,7 @@ function Checkout() {
 
   const addPromo = () => {
     // verify promo exists
-    let id = "";
-    let value = getPromoCodeValue(id);
+    let value = getPromoCodeValue(promo_code_input);
     // will return "invalid" if promo code does not exist
     if( value === "invalid" ){
       return;
@@ -70,7 +66,8 @@ function Checkout() {
         </div>
 
         <div className="checkout__right">
-            <Subtotal />
+            <Subtotal
+              flagVal={0} />
         </div>
     </div>
     

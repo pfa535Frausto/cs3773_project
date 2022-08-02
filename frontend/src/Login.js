@@ -3,7 +3,7 @@ import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 // import { auth } from "./firebase";
 import { useStateValue } from "./StateProvider";
-import { UserMatch, UserExists, AddUserToDB} from "./DBFunctions";
+import { UserMatch, UserExists, AddUserToDB, getUserID} from "./DBFunctions";
 
 
 
@@ -33,9 +33,11 @@ function Login() {
 
     // display error
     // else:
+    // get user's unique ID from DB
     dispatch({
       type: 'SET_USER',
       user: {
+        ID: getUserID(email),
         email: email,
       },
     });
@@ -59,9 +61,14 @@ function Login() {
       return;
     }
     // else:
+    // add email + pw to DB
+    AddUserToDB(email, password)
+    // get user's unique ID from DB
+    getUserID(email)
     dispatch({
       type: 'SET_USER',
       user: {
+        ID: getUserID(email),
         email: email,
       },
     });

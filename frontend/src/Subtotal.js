@@ -5,9 +5,17 @@ import { useNavigate } from 'react-router-dom'
 
 
 
-function Subtotal() {
+function Subtotal(flagVal) {
     const navigate = useNavigate ();
     const [{ cart, promoCodes }, dispatch] = useStateValue();
+    let flag = Object.values(flagVal)[0]
+    let withCode = 0;
+    let onlyCost = 1;
+    let onlySavings = 2;
+
+    let subtotal = 0
+    let savings = 0;
+
 
     let cartIsEmpty = false;
     let btn_state = "enabled__button";
@@ -18,19 +26,44 @@ function Subtotal() {
     
 
     // calculate subtotal
-    let subtotal = 0;
     for( let i = 0; i < cart.length; i++) 
     {
         subtotal += cart[i].price;
     }
+    if( flag !== onlyCost ){
     for( let i = 0; i < promoCodes.length; i++) 
-    {
-        subtotal -= promoCodes[i].savings;
+        {
+            savings += promoCodes[i].savings;
+        }
     }
+    if( flag === onlySavings )
+    {
+        return formatMoney(savings);
+    }
+    subtotal -= savings;
     subtotal = subtotal.toFixed(2) // fixes to 2 decmial points (sometimes itll have a long decimal for some reason)
+    subtotal = formatMoney(subtotal)
+    if( flag === onlyCost )
+    {
+        return subtotal;
+    }
+    if( flag === withCode ){
+        return (
+            <div className="subtotal">
+                <>
+                    <p>
+                        Subtotal ({cart?.length} items): <strong>${subtotal}</strong>
+                    </p>
+                </>
+                <button className={btn_state} disabled={cartIsEmpty} onClick={e => navigate('/payment')}>Proceed to Checkout</button>
+            </div>
+        )
+    }
+};
 
+function formatMoney(money) {
     // makes subtotal look nice with a fixed decimal point if no cents involved
-    let subtotalStr = subtotal.toString();
+    let subtotalStr = money.toString();
     let subtotal_dollars = subtotalStr;
     let subtotal_cents = "00";
 
@@ -53,18 +86,10 @@ function Subtotal() {
         subtotal_dollars = subtotal_dollars.slice(0,subtotal_dollars.length - dollar_comma) + ',' + subtotal_dollars.slice(subtotal_dollars.length - dollar_comma);
         dollar_comma += 4;
     }
-  return (
-    <div className="subtotal">
-        <>
-            <p>
-                Subtotal ({cart?.length} items): <strong>${subtotal_dollars}.{subtotal_cents}</strong>
-            </p>
-        </>
-        <button className={btn_state} disabled={cartIsEmpty} onClick={e => navigate('/payment')}>Proceed to Checkout</button>
+    let formattedMoney = subtotal_dollars + '.' + subtotal_cents;
 
-    </div>
-    
-    
-)};
+    return formattedMoney
+}
 
 export default Subtotal;
+

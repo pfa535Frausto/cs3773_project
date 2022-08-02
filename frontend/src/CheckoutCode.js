@@ -19,7 +19,7 @@ function CheckoutCode({ id, savings }) {
             <p className="checkoutProduct__title" >{id}
             </p>
             <p className="checkoutProduct__price" >
-                <small>- $</small>
+                <small>Saving: $</small>
                 <strong>{savings}</strong>
             </p>
 
