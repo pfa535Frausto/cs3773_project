@@ -29,10 +29,49 @@
     flex: 0.8;
 }
 
-
-.header__search {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    border-radius: 24px;
+.button__formOptions__enabled {
+    background: #f0c14b;
+    border: 1px solid;
+    margin-top: 10px;
+    margin-left: -1px;
+    margin-right: 10px;
+    border-color: #a88734 #9c7e31 #846a29;
+    color: #111;
 }
+
+.button__formOptions__disabled {
+    background: lightgray;
+    border: 1px solid;
+    margin-top: 10px;
+    margin-left: -1px;
+    margin-right: 10px;
+    border-color: black;
+    color: #111;
+
+}
+
+.button__placeOrder__enabled {
+    height: 40px;
+    width: 150px;
+    background: #f0c14b;
+    border: 1px solid;
+    margin-top: 10px;
+    margin-left: -1px;
+    margin-right: 10px;
+    border-color: #a88734 #9c7e31 #846a29;
+    color: #111;
+}
+
+.button__placeOrder__disabled {
+    height: 40px;
+    width: 150px;
+    border: 1px solid;
+    background: lightgray;
+    margin-top: 10px;
+    margin-left: -1px;
+    margin-right: 10px;
+    border-color: black;
+    color: #111;
+
+}
+

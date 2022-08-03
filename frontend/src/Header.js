@@ -24,10 +24,15 @@ function Header() {
             //user = null;
             dispatch({
                 type: 'SET_USER',
-                user: {
-                  email: 'Guest',
-                },
-              });
+                user: null
+              })
+            //dispatch({
+                //type: 'SET_USER',
+                //user: {
+                  //  ID: 0,
+                //  email: 'Guest',
+                //},
+             // });
         }
         
     }
@@ -60,19 +65,10 @@ function Header() {
 
             <div className='header__option'>
                 <span
-                    className='header__optionLineOne'>Returns
+                    className='header__optionLineOne'>Account
                 </span>
                 <span
-                    className='header__optionLineTwo'>& Orders
-                </span>
-            </div>
-
-            <div className='header__option'>
-                <span
-                    className='header__optionLineOne'>Your
-                </span>
-                <span
-                    className='header__optionLineTwo'>Prime
+                    className='header__optionLineTwo'>Settings
                 </span>
             </div>
             
