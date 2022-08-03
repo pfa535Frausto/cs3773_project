@@ -1,31 +1,61 @@
-const UserMatch = (email, pw) => {
-    let match = false;
+
+import axios from "axios";
+import AccountService from "./services/AccountService";
+
+/**
+ * UserMatch will return an object if an account with a certain
+ * email and password exists in the database. Otherwise, it will return null.
+ * 
+ * @param email email of the account you want to search for
+ * @param pw password of the account you want to search for
+ * @returns a boolean of whether an account currently exists in the database
+ */
+ const UserMatch = async(email, pw) => {
     // do DB query for username + pw
     // http://localhost:8080/api/v1/account/users/{email}/password/{password}
-    // if returned a match
-    match = true;
-    return match;
+
+    // account will either contain an account object or null
+    const account = await AccountService.getAccount(email, pw).then(res => res.data).catch(err => { return null; });
+    return account;
 }
 
-const UserExists = (email) => {
-    let match = false;
-    // do DB query for username + pw
-    // http://localhost:8080/api/v1/account/users/{email}/password/{password}
-    // if returned a match
-    // match = true;
-    return match;
+
+/**
+ * UserExists will return a boolean depending on whether an account with a certain
+ * email exists in the database. 
+ * 
+ * @param email email of the account you want to search for
+ * @returns a boolean of whether an account currently exists in the database
+ */
+const UserExists = async(email) => {
+    // do DB query for email
+    // http://localhost:8080/api/v1/account/...
+
+    const match = await AccountService.getAccountByEmail(email).then(res => true).catch(err => { return false; });
+    return match
 }
 
-const AddUserToDB = (email, pw) => {
+
+/**
+ * AddUserToDB will make a call to AccountService to store this information
+ * in the database.
+ * 
+ * @param email new email of the account you want to store 
+ * @param password new password of the account you want to store
+ */
+const AddUserToDB = async(email, pw) => {
     // add email + pw to DB
     // http://localhost:8080/api/v1/account/users/{email}/password/{password}
+    ///http://localhost:8080/api/v1/account/users/{email}/passwords/{password}/cards/{creditcard}
+
+    AccountService.registerAccount(email, pw);
 }
 
-const getUserID = (email) => {
+const getUserID = async(email, password) => {
     let ID = 0;
     // get unique ID from DB
     // http://localhost:8080/api/v1/account/users/{email}/password/{password}
-    
+    const match = await AccountService.getAccountByEmail(email).then(res => true).catch(err => { return false; });
     return ID;
 
 }

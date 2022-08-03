@@ -23,14 +23,22 @@ function Login() {
       console.log("invalid email format");
       return;
     }
-    // do DB query with username + pw
-    // if no match:
-    if( UserMatch(email,password) === false ){
-      // display error if no username + pw match
-      console.log("no match with that email and password combo");
-      return;
-    }
-
+     // Verifying if a email + pw combo exists
+     UserMatch(email, password).then(accountFound => {
+      if (accountFound === null) {
+        alert('Could not find an account with the credentials entered.');
+        return;
+      } 
+      
+      // JUST FOR TESTING
+      else {
+        // Printing account to console
+        console.log('Logging in...')
+        console.log(accountFound);
+        navigate('/');
+      }
+    });
+    
     // display error
     // else:
     // get user's unique ID from DB
