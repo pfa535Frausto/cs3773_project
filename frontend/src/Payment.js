@@ -18,7 +18,6 @@ function Payment() {
     const [zip, setZip] = useState(null);
     const [addressSuccess, setAddressSuccess] = useState("False")
 
-
     const [cardNum, setCardNum] = useState(null);
     const [exp, setExp] = useState(null);
     const [CVV, setCVV] = useState(null);
@@ -91,9 +90,7 @@ function Payment() {
     }
 
     if (addressSuccess === "True" && cardSuccess === "True"){
-        console.log("can hit submit")
         disablePlaceOrderBtn = false;
-        
         paymentBtnStatus = "button__placeOrder__enabled";
 
     }
@@ -107,14 +104,6 @@ function Payment() {
     order_total = Number.parseFloat(parseFloat(subtotal) - parseFloat(savings) + parseFloat(tax_sum) + parseFloat(shippingCost)).toFixed(2); 
     // grabs user address from DB if user is logged in
 
-    const submitOrder = () => {
-
-
-        console.log("submit order");
-        navigate('/confirmation');
-
-    }
-
     const verifyAddress = () => {
         //verify address details entered match format
         if( address1 === "" || address1 === null || address2 === "" || address2 === null ||  city === "" || city === null|| state === "" || state === null || zip === "" || zip === null)
@@ -125,8 +114,6 @@ function Payment() {
         // upon success
         setAddressSuccess("True");
         navigate('/payment');
-
-        console.log("submit address");
     }
 
     const verifyPayment = () => {
@@ -140,10 +127,6 @@ function Payment() {
         // upon success
         setCardSuccess("True");
         navigate('/payment');
-
-
-
-        console.log("submit card");
     }
     
     const unblockAddress = () =>{ 
@@ -163,6 +146,15 @@ function Payment() {
         navigate('/payment');
 
     }
+
+
+    const submitOrder = () => {
+        // log purchase into DB
+
+        navigate('/confirmation');
+
+    }
+
 
 
   return (
